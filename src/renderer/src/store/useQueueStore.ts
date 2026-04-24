@@ -72,6 +72,7 @@ interface QueueState {
   setCTSE: (val: number | '') => void
   setCS: (val: number | '') => void
   setHoursPerDay: (val: number | '') => void
+  clearAll: () => void
   calculate: () => void
 }
 
@@ -110,6 +111,26 @@ export const useQueueStore = create<QueueState>((set, get) => ({
   setCTSE: (val) => set({ CTSE: val }),
   setCS: (val) => set({ CS: val }),
   setHoursPerDay: (val) => set({ hoursPerDay: val }),
+
+  clearAll: () => set({
+    lambda: '',
+    mu: '',
+    k: '',
+    M: '',
+    N: '',
+    CTE: '',
+    CTS: '',
+    CTSE: '',
+    CS: '',
+    hoursPerDay: 8,
+    metrics: null,
+    isStable: true,
+    isCalculating: false,
+    chartData: [],
+    probabilities: [],
+    costData: [],
+    CT: null,
+  }),
 
   calculate: () => {
     const state = get()

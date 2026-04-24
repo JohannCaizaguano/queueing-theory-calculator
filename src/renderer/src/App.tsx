@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
@@ -11,10 +12,31 @@ import { useQueueStore, MODELS } from '@/store/useQueueStore'
 import { translations } from '@/lib/i18n'
 import { CheckCircle2, AlertTriangle } from 'lucide-react'
 
+/** Convert any CSS color string (oklch, hsl, rgb, etc.) to #rrggbb hex */
+function cssColorToHex(cssColor: string): string {
+  const ctx = document.createElement('canvas').getContext('2d')!
+  ctx.fillStyle = cssColor
+  return ctx.fillStyle // browsers normalize to #rrggbb
+}
+
 function App(): React.JSX.Element {
   const { selectedModel, isStable, metrics, language } = useQueueStore()
   const t = translations[language]
   const modelInfo = MODELS.find((m) => m.id === selectedModel)!
+
+  // Sync titlebar overlay color with the current CSS theme
+  useEffect(() => {
+    const root = document.documentElement
+    const styles = getComputedStyle(root)
+    const bgColor = styles.getPropertyValue('--background').trim()
+    const fgColor = styles.getPropertyValue('--foreground').trim()
+
+    if (bgColor && fgColor) {
+      const bgHex = cssColorToHex(bgColor)
+      const fgHex = cssColorToHex(fgColor)
+      window.api.updateTitleBarOverlay({ color: bgHex, symbolColor: fgHex }).catch(() => {})
+    }
+  }, [])
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">

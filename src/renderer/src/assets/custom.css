@@ -1,0 +1,29 @@
+/* ==============================================
+   Custom styles that survive shadcn theme changes.
+   This file is imported AFTER main.css so it won't
+   be overwritten by `npx shadcn add`.
+   ============================================== */
+
+/* Custom scrollbar — uses theme CSS variables, adapts to any theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--background);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}

@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Info, Loader2, DollarSign } from 'lucide-react'
+import { Info, Loader2, DollarSign, Eraser } from 'lucide-react'
 import { useQueueStore, MODELS } from '@/store/useQueueStore'
 import { translations } from '@/lib/i18n'
 
@@ -24,7 +24,7 @@ export function InputPanel(): React.JSX.Element {
     CTE, CTS, CTSE, CS, CT, hoursPerDay,
     setLambda, setMu, setK, setM, setN,
     setCTE, setCTS, setCTSE, setCS, setHoursPerDay,
-    calculate, isCalculating, language,
+    calculate, clearAll, isCalculating, language,
   } = useQueueStore()
   const t = translations[language]
 
@@ -33,7 +33,17 @@ export function InputPanel(): React.JSX.Element {
   return (
     <Card className="h-fit">
       <CardHeader className="pb-4">
-        <CardTitle className="text-base">{t.inputParams}</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base">{t.inputParams}</CardTitle>
+          <Button
+            onClick={clearAll}
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7 text-muted-foreground hover:text-destructive"
+          >
+            <Eraser className="h-4 w-4" />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Lambda */}
@@ -185,7 +195,7 @@ export function InputPanel(): React.JSX.Element {
           />
         </div>
 
-        {/* Calculate Button moved above the costs */}
+        {/* Calculate Button */}
         <Button
           onClick={calculate}
           disabled={isCalculating}

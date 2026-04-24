@@ -40,7 +40,7 @@ export function calcPICS(lambda: number, mu: number): QueueMetrics | null {
   const Ln = L // For M/M/1, Ln = 1 / (1 - rho)
   const Pk = rho // P(system busy)
   const Pne = P0 // P(no wait) = P(system empty)
-  const Wn = W // Time conditional on waiting = 1/mu / (1-rho) ... simplified
+  const Wn = Pk > 0 ? Wq / Pk : 0
 
   return {
     rho: round(rho),
@@ -53,7 +53,7 @@ export function calcPICS(lambda: number, mu: number): QueueMetrics | null {
     Ln: round(1 / (1 - rho)),
     W: round(W),
     Wq: round(Wq),
-    Wn: round(1 / (mu - lambda)),
+    Wn: round(Wn),
   }
 }
 
@@ -81,7 +81,7 @@ export function calcPICM(lambda: number, mu: number, k: number): QueueMetrics | 
   const W = Wq + 1 / mu
   const Ln = Lq > 0 ? L / (1 - P0) : 0
   const Pne = 1 - Pk
-  const Wn = Wq > 0 ? W / (1 - P0) : 0
+  const Wn = Pk > 0 ? Wq / Pk : 0
 
   return {
     rho: round(rho),

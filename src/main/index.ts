@@ -14,8 +14,8 @@ function createWindow(): void {
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
-      color: '#ffffff', // matches the shadcn default oklch(1 0 0) background
-      symbolColor: '#000000'
+      color: '#00000000', // transparent initial — renderer will sync the real theme color
+      symbolColor: '#888888'
     },
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -32,6 +32,21 @@ function createWindow(): void {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
+
+  // IPC: Update titlebar overlay to match the current CSS theme
+  ipcMain.handle(
+    'update-titlebar-overlay',
+    (_event, colors: { color: string; symbolColor: string }) => {
+      try {
+        mainWindow.setTitleBarOverlay({
+          color: colors.color,
+          symbolColor: colors.symbolColor
+        })
+      } catch {
+        // setTitleBarOverlay may not be available on all platforms
+      }
+    }
+  )
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.

@@ -9,6 +9,9 @@ const api = {
   exportCSV: (data: unknown): Promise<void> => ipcRenderer.invoke('export-csv', data),
   // Placeholder: Save calculation history
   saveHistory: (entry: unknown): Promise<void> => ipcRenderer.invoke('save-history', entry),
+  // Update titlebar overlay to match the current theme
+  updateTitleBarOverlay: (colors: { color: string; symbolColor: string }): Promise<void> =>
+    ipcRenderer.invoke('update-titlebar-overlay', colors),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

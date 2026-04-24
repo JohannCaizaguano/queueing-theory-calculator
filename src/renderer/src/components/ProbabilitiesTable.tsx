@@ -35,7 +35,6 @@ export function ProbabilitiesTable(): React.JSX.Element {
                   <TableHead className="w-[80px] text-center font-semibold">n</TableHead>
                   <TableHead className="text-center font-semibold">{t.state}</TableHead>
                   <TableHead className="text-right font-semibold">Pn</TableHead>
-                  <TableHead className="text-right font-semibold">Pn (%)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -54,9 +53,9 @@ export function ProbabilitiesTable(): React.JSX.Element {
                     </TableCell>
                     <TableCell className="text-right font-mono tabular-nums">
                       {row.Pn.toFixed(6)}
-                    </TableCell>
-                    <TableCell className="text-right font-mono tabular-nums">
-                      {(row.Pn * 100).toFixed(4)}%
+                      <span className="ml-1 text-[11px] text-muted-foreground font-normal">
+                        ({(row.Pn * 100).toFixed(2)}%)
+                      </span>
                     </TableCell>
                   </TableRow>
                 ))}
